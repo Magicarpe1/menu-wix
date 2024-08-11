@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <style>
+        .menu-jour {
+            margin-bottom: 20px;
+        }
+        .menu-type {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="menu-container"></div>
+
+    <script>
+        // Remplacez l'URL ci-dessous par le lien direct vers votre fichier JSON hébergé
+        const jsonUrl = 'https://0ba0c47b-a87b-44c8-a483-cd0748542559.usrfiles.com/ugd/0ba0c4_82d7cbe000d3440386eca637ed756fee.json';
+
+        fetch(jsonUrl)
+            .then(response => response.json())
+            .then(data => {
+                afficherMenu(data);
+            })
+            .catch(error => console.error('Erreur lors du chargement des données du menu:', error));
+
+        function afficherMenu(data) {
+            let htmlContent = '';
+
+            data.forEach(jour => {
+                htmlContent += `<div class="menu-jour"><h2>${jour.Date}</h2>`;
+
+                ['Menu Mer', 'Menu Terre', 'Menu Veggie', 'Menu Végan'].forEach(menuType => {
+                    if (jour[menuType]) {
+                        htmlContent += `<div class="menu-type"><h3>${menuType}</h3>`;
+                        htmlContent += `<p>Entrée : ${jour[menuType].Entrée || 'Non disponible'}</p>`;
+                        htmlContent += `<p>Plat : ${jour[menuType].Plat || 'Non disponible'}</p>`;
+                        htmlContent += `<p>Dessert : ${jour[menuType].Dessert || 'Non disponible'}</p>`;
+                        htmlContent += `</div>`;
+                    }
+                });
+
+                htmlContent += `</div>`;
+            });
+
+            document.getElementById('menu-container').innerHTML = htmlContent;
+        }
+    </script>
+</body>
+</html>
